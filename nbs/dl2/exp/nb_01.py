@@ -4,7 +4,34 @@
 #################################################
 # file to edit: dev_nb/01_matmul.ipynb
 
-from exp.nb_00 import *
+from pathlib import Path
+print(dir)
+dirNbs = 'D:/Repos/Fast AI/fast-ai-course-v3/nbs'
+dirExpNb00 = dirNbs + '/dl2/exp/nb_00.py'
+newPath = Path(dirExpNb00)
+print('newpath',newPath) # newpath D:\Repos\Fast AI\fast-ai-course-v3\nbs\dl2\exp\nb_01.py
+ 
+import importlib.util
+spec = importlib.util.spec_from_file_location("nb_00", newPath)
+print('type spec', type(spec)) # type spec <class '_frozen_importlib.ModuleSpec'>
+foo00 = importlib.util.module_from_spec(spec)
+print('type foo00', type(foo00)) # type foo00 <class 'module'>
+spec.loader.exec_module(foo00)
+print(foo00.TEST) # test (in nb_00, TEST='test')
+print(foo00) # <module 'nb_00' from 'D:\\Repos\\Fast AI\\fast-ai-course-v3\\nbs\\dl2\\exp\\nb_00.py'>
+
+print(type(1)) # <class 'int'>
+import types
+if isinstance(foo00, types.ModuleType):
+     print(repr(foo00), "is a module")
+elif isinstance(foo00, 'module'):
+     print(repr(foo00), "is a module str")
+else:
+     print(repr(foo00), "is not a module")
+        
+# from exp.nb_00 import *
+# from foo00.nb_00 import * # No module named 'foo00'
+import foo00 # ModuleNotFoundError: No module named 'foo00'
 import operator
 
 def test(a,b,cmp,cname=None):
